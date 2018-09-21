@@ -144,24 +144,6 @@ public class CropImageActivity extends AppCompatActivity implements CropImageVie
         }
     }
 
-//    @Override
-//    public void onGetCroppedImageComplete(CropImageView view, Bitmap bitmap, Exception error) {
-//        if (error == null) {
-//            croppedImage = bitmap;
-//            try {
-//                String path = saveToInternalStorage(this, bitmap);
-//                Intent resultIntent = new Intent();
-//                resultIntent.putExtra(CROPPED_IMAGE_PATH, path);
-//                setResult(Activity.RESULT_OK, resultIntent);
-//                finish();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//                cropFailed();
-//            }
-//        } else {
-//           cropFailed();
-//        }
-//    }
 
     private String saveToInternalStorage(Context context, Bitmap bitmapImage) throws IOException {
         ContextWrapper cw = new ContextWrapper(context);

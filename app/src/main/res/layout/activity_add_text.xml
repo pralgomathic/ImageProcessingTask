@@ -46,4 +46,19 @@
         android:layout_margin="10dp"
         android:layout_gravity="center_horizontal" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:text="@string/add_text_show"/>
+
+    <VideoView
+        android:id="@+id/addTextVideoView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        />
+
 </LinearLayout>

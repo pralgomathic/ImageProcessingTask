@@ -11,7 +11,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.MediaController;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.bjit.interview.imageprocessingtask.R;
 import com.bjit.interview.imageprocessingtask.Utilities.Utils;
@@ -29,6 +31,8 @@ public class AddAudioActivity extends AppCompatActivity implements View.OnClickL
     private String selectedVideoPath = "";
     private Button selectAudioButton, selectVideoButton, addAudioToVideoButton;
     private ProgressDialog progressDialog;
+    private VideoView addAudioVideoView;
+    private String videoOutputDestination = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +52,8 @@ public class AddAudioActivity extends AppCompatActivity implements View.OnClickL
         selectVideoButton.setOnClickListener(this);
         addAudioToVideoButton = (Button)findViewById(R.id.addAudioToVideoButton);
         addAudioToVideoButton.setOnClickListener(this);
+        addAudioVideoView = (VideoView)findViewById(R.id.addAudioVideoView);
+        addAudioVideoView.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -129,8 +135,8 @@ public class AddAudioActivity extends AppCompatActivity implements View.OnClickL
     }
     private void runAddAudioCommand(){
         String cmd = "ffmpeg -i Input_Video.mp4 -i Added-Audio-Track.mp3 -c copy -map 0:0 -map 1:0 Output.mp4";
-        String outputPath = Utils.getExternalStoragePath()+"/"+Utils.getOutputFileName("add_audio",Utils.getFileExtension(selectedVideoPath));
-        String[] command = new String[]{"-y", "-i", selectedVideoPath, "-i", selectedAudioPath,"-c","copy","-map","0:0","-map","1:0",outputPath};
+        videoOutputDestination = Utils.getExternalStoragePath()+"/"+Utils.getOutputFileName("add_audio",Utils.getFileExtension(selectedVideoPath));
+        String[] command = new String[]{"-y", "-i", selectedVideoPath, "-i", selectedAudioPath,"-c","copy","-map","0:0","-map","1:0",videoOutputDestination};
 
         if (command.length != 0) {
             runFFmpegCommand(command);
@@ -162,8 +168,20 @@ public class AddAudioActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onFinish() {
                 progressDialog.dismiss();
+                if (!videoOutputDestination.isEmpty()) {
+
+                    addAudioVideoView.setVisibility(View.VISIBLE);
+                    playVideo(videoOutputDestination);
+                }
             }
         });
+
+    }
+    public void playVideo(String videoPath) {
+        MediaController mediaController = new MediaController(this);
+        addAudioVideoView.setMediaController(mediaController);
+        addAudioVideoView.setVideoPath(videoPath);
+        addAudioVideoView.start();
 
     }
     @Override

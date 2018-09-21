@@ -57,14 +57,6 @@ public class VideoMergeActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_merge);
-        if (FFmpeg.getInstance(this).isSupported()) {
-            // ffmpeg is supported
-            versionFFmpeg();
-            //ffmpegTestTaskQuit();
-        } else {
-            // ffmpeg is not supported
-            Log.e(TAG, "ffmpeg not supported!");
-        }
         initUI();
     }
 
@@ -229,17 +221,6 @@ public class VideoMergeActivity extends AppCompatActivity implements View.OnClic
         } else return null;
     }
 
-    private String getPath(Uri uri) {
-        String[] projection = {MediaStore.Video.Media.DATA};
-        getContentResolver();
-        Cursor cursor = getApplicationContext().getContentResolver().query(uri, projection, null, null, null);
-        if (cursor != null) {
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
-        } else
-            return null;
-    }
     public void playVideo(String videoPath) {
         MediaController mediaController = new MediaController(this);
         mergeVideoView.setMediaController(mediaController);
@@ -294,43 +275,9 @@ public class VideoMergeActivity extends AppCompatActivity implements View.OnClic
                             ) {
                         Log.d(TAG, "read & write permission granted");
                         Toast.makeText(this, "read & write permission granted", Toast.LENGTH_LONG).show();
-                        // process the normal flow
 
-//                        Intent i = new Intent(MainActivity.this, WelcomeActivity.class);
-//                        startActivity(i);
-//                        finish();
-                        //else any one or both the permissions are not granted
                     } else {
                         Log.d(TAG, "Some permissions are not granted ask again ");
-                        //permission is denied (this is the first time, when "never ask again" is not checked) so ask again explaining the usage of permission
-//                        // shouldShowRequestPermissionRationale will return true
-                        //show the dialog or snackbar saying its necessary and try again otherwise proceed with setup.
-//                        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)
-//                                || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-//                                || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)
-//                                || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECORD_AUDIO)) {
-//                            showDialogOK("Service Permissions are required for this app",
-//                                    new DialogInterface.OnClickListener() {
-//                                        @Override
-//                                        public void onClick(DialogInterface dialog, int which) {
-//                                            switch (which) {
-//                                                case DialogInterface.BUTTON_POSITIVE:
-//                                                    checkAndRequestPermissions();
-//                                                    break;
-//                                                case DialogInterface.BUTTON_NEGATIVE:
-//                                                    // proceed with logic by disabling the related features or quit the app.
-//                                                    finish();
-//                                                    break;
-//                                            }
-//                                        }
-//                                    });
-//                        }
-//                        //permission is denied (and never ask again is  checked)
-//                        //shouldShowRequestPermissionRationale will return false
-//                        else {
-//                            explain("You need to give some mandatory permissions to continue. Do you want to go to app settings?");
-//                            //                            //proceed with logic by disabling the related features or quit the app.
-//                        }
                     }
                 }
             }
@@ -338,18 +285,4 @@ public class VideoMergeActivity extends AppCompatActivity implements View.OnClic
 
     }
 
-    private void versionFFmpeg() {
-        FFmpeg.getInstance(this).execute(new String[]{"-version"}, new ExecuteBinaryResponseHandler() {
-            @Override
-            public void onSuccess(String message) {
-                Log.d("FFMPEG NEW", message);
-            }
-
-            @Override
-            public void onProgress(String message) {
-                Log.d("FFMPEG NEW", message);
-            }
-        });
-
-    }
 }

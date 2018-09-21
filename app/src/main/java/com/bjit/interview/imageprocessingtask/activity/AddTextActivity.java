@@ -13,7 +13,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.MediaController;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.bjit.interview.imageprocessingtask.R;
 import com.bjit.interview.imageprocessingtask.Utilities.PathUtils;
@@ -33,8 +35,10 @@ public class AddTextActivity extends AppCompatActivity implements View.OnClickLi
     private ProgressDialog progressDialog;
     private Button selectTextButton, selectVideoButton, addTextToVideButton;
     private EditText textInputEditText;
+    private VideoView addTextVideoView;
     private String selectedVideoPath = "";
     private String selectedFontPath = "";
+    private String outputVideoPath = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +62,8 @@ public class AddTextActivity extends AppCompatActivity implements View.OnClickLi
         selectVideoButton = (Button) findViewById(R.id.selectVideoButton);
         selectVideoButton.setOnClickListener(this);
         textInputEditText = (EditText)findViewById(R.id.textInputEditText);
+        addTextVideoView = (VideoView)findViewById(R.id.addTextVideoView);
+        addTextVideoView.setVisibility(View.INVISIBLE);
     }
 
     private void addTextToVideo() {
@@ -71,17 +77,13 @@ public class AddTextActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void runAddTextCommand() {
-        String cmd = "ffmpeg -y -i /storage/emulated/0/APK/sample_2.mp4 -vf subtitles=/storage/emulated/0/APK/subtitle_text.ass /storage/emulated/0/APK/video_with_text.mp4";
-        String outputPath = Utils.getExternalStoragePath()+"/"+Utils.getOutputFileName("add_text",Utils.getFileExtension(selectedVideoPath));
-        //String[] command = new String[]{"-y", "-i", selectedVideoPath, "-vf", "subtitles=" + selectedFilePath, outputPath};
-
+        outputVideoPath = Utils.getExternalStoragePath()+"/"+Utils.getOutputFileName("add_text",Utils.getFileExtension(selectedVideoPath));
         String position = "x=(w-text_w)/2: y=(h-text_h)/3";
         String border =  ": box=1: boxcolor=black@0.5:boxborderw=5";
-        int size = 32;
+        int size = 36;
         String text = textInputEditText.getText().toString();
-        //String fontPath = "/storage/emulated/0/APK/RobotoCondensed-Regular.ttf";
         String color = "white";
-        String[] command = new String[]{"-y","-i", selectedVideoPath, "-vf", "drawtext=fontfile=" + selectedFontPath + ":text=" + text + ": fontcolor=" + color + ": fontsize=" + size + border + ": " + position, "-c:v", "libx264", "-c:a", "copy", "-movflags", "+faststart",outputPath};
+        String[] command = new String[]{"-y","-i", selectedVideoPath, "-vf", "drawtext=fontfile=" + selectedFontPath + ":text=" + text + ": fontcolor=" + color + ": fontsize=" + size + border + ": " + position, "-c:v", "libx264", "-c:a", "copy", "-movflags", "+faststart",outputVideoPath};
         if (command.length != 0) {
             runFFmpegCommand(command);
         } else {
@@ -112,6 +114,10 @@ public class AddTextActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onFinish() {
                 progressDialog.dismiss();
+                if(!outputVideoPath.isEmpty()) {
+                    addTextVideoView.setVisibility(View.VISIBLE);
+                    playVideo(outputVideoPath);
+                }
             }
         });
 
@@ -123,7 +129,7 @@ public class AddTextActivity extends AppCompatActivity implements View.OnClickLi
                 addTextToVideo();
                 break;
             case R.id.selectTextButton:
-                selectTextFile();
+                selectFontFile();
                 break;
             case R.id.selectVideoButton:
                 selectVideo();
@@ -131,7 +137,7 @@ public class AddTextActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-    private void selectTextFile() {
+    private void selectFontFile() {
 
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
@@ -189,7 +195,13 @@ public class AddTextActivity extends AppCompatActivity implements View.OnClickLi
             return cursor.getString(column_index);
         } else return null;
     }
+    public void playVideo(String videoPath) {
+        MediaController mediaController = new MediaController(this);
+        addTextVideoView.setMediaController(mediaController);
+        addTextVideoView.setVideoPath(videoPath);
+        addTextVideoView.start();
 
+    }
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
