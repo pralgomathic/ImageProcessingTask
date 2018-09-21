@@ -67,8 +67,8 @@ public class AddTextActivity extends AppCompatActivity implements View.OnClickLi
         selectTextButton.setOnClickListener(this);
         selectVideoButton = (Button) findViewById(R.id.selectVideoButton);
         selectVideoButton.setOnClickListener(this);
-        textInputEditText = (EditText)findViewById(R.id.textInputEditText);
-        addTextVideoView = (VideoView)findViewById(R.id.addTextVideoView);
+        textInputEditText = (EditText) findViewById(R.id.textInputEditText);
+        addTextVideoView = (VideoView) findViewById(R.id.addTextVideoView);
         addTextVideoView.setVisibility(View.INVISIBLE);
     }
 
@@ -83,20 +83,21 @@ public class AddTextActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void runAddTextCommand() {
-        outputVideoPath = Utils.getExternalStoragePath()+"/"+Utils.getOutputFileName("add_text",Utils.getFileExtension(selectedVideoPath));
+        outputVideoPath = Utils.getExternalStoragePath() + "/" + Utils.getOutputFileName("add_text", Utils.getFileExtension(selectedVideoPath));
         String position = "x=(w-text_w)/2: y=(h-text_h)/3";
-        String border =  ": box=1: boxcolor=black@0.5:boxborderw=5";
+        String border = ": box=1: boxcolor=black@0.5:boxborderw=5";
         int size = 36;
         String text = textInputEditText.getText().toString();
         String color = "white";
-        String[] command = new String[]{"-y","-i", selectedVideoPath, "-vf", "drawtext=fontfile=" + selectedFontPath + ":text=" + text + ": fontcolor=" + color + ": fontsize=" + size + border + ": " + position, "-c:v", "libx264", "-c:a", "copy", "-movflags", "+faststart",outputVideoPath};
+        String[] command = new String[]{"-y", "-i", selectedVideoPath, "-vf", "drawtext=fontfile=" + selectedFontPath + ":text=" + text + ": fontcolor=" + color + ": fontsize=" + size + border + ": " + position, "-c:v", "libx264", "-c:a", "copy", "-movflags", "+faststart", outputVideoPath};
         if (command.length != 0) {
             runFFmpegCommand(command);
         } else {
             Toast.makeText(this, getString(R.string.empty_command_toast), Toast.LENGTH_LONG).show();
         }
     }
-    private void runFFmpegCommand(String[] command){
+
+    private void runFFmpegCommand(String[] command) {
         FFmpeg.getInstance(this).execute(command, new ExecuteBinaryResponseHandler() {
 
             @Override
@@ -108,19 +109,19 @@ public class AddTextActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onSuccess(String message) {
                 progressDialog.setMessage("Processing\n" + message);
-                Log.d("FFMPEG NEW",message);
+                Constants.debugLog(TAG, message);
             }
 
             @Override
             public void onProgress(String message) {
                 progressDialog.setMessage("Processing..Please Wait..");
-                Log.d("FFMPEG NEW",message);
+                Constants.debugLog(TAG, message);
             }
 
             @Override
             public void onFinish() {
                 progressDialog.dismiss();
-                if(!outputVideoPath.isEmpty()) {
+                if (!outputVideoPath.isEmpty()) {
                     addTextVideoView.setVisibility(View.VISIBLE);
                     playVideo(outputVideoPath);
                 }
@@ -128,6 +129,7 @@ public class AddTextActivity extends AppCompatActivity implements View.OnClickLi
         });
 
     }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -174,33 +176,34 @@ public class AddTextActivity extends AppCompatActivity implements View.OnClickLi
             if (requestCode == FILE_SELECT_CODE) {
                 Uri uri = data.getData();
                 try {
-                    selectedFontPath = PathUtils.getPath(getApplicationContext(),uri);
+                    selectedFontPath = PathUtils.getPath(getApplicationContext(), uri);
                 } catch (URISyntaxException e) {
                     e.printStackTrace();
                 }
                 if (selectedFontPath == null) {
-                    Log.d(TAG, "selected file path = null!");
+                    Constants.errorLog(TAG, "selected file path = null!");
 
                 } else {
 
                     Toast.makeText(this, selectedFontPath, Toast.LENGTH_LONG).show();
-                    Log.d(TAG, selectedFontPath);
+                    Constants.debugLog(TAG, selectedFontPath);
 
                 }
             } else if (requestCode == SELECT_VIDEO) {
                 selectedVideoPath = getVideoPath(data.getData());
                 if (selectedVideoPath == null) {
-                    Log.d(TAG, "selected video path = null!");
+                    Constants.errorLog(TAG, "selected video path = null!");
 
                 } else {
                     Toast.makeText(this, selectedVideoPath, Toast.LENGTH_LONG).show();
-                    Log.d(TAG, selectedVideoPath);
+                    Constants.debugLog(TAG, selectedVideoPath);
 
                 }
             }
         }
 
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
@@ -220,17 +223,18 @@ public class AddTextActivity extends AppCompatActivity implements View.OnClickLi
                     if (perms.get(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                             && perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                             ) {
-                        Log.d(TAG, "read & write permission granted");
+                        Constants.debugLog(TAG, "read & write permission granted");
                         Toast.makeText(this, "read & write permission granted", Toast.LENGTH_LONG).show();
 
                     } else {
-                        Log.d(TAG, "Some permissions are not granted ask again ");
+                        Constants.errorLog(TAG, "Some permissions are not granted ask again ");
                     }
                 }
             }
         }
 
     }
+
     private String getVideoPath(Uri uri) {
         String[] projection = {MediaStore.Images.Media.DATA};
         Cursor cursor = managedQuery(uri, projection, null, null, null);
@@ -240,6 +244,7 @@ public class AddTextActivity extends AppCompatActivity implements View.OnClickLi
             return cursor.getString(column_index);
         } else return null;
     }
+
     public void playVideo(String videoPath) {
         MediaController mediaController = new MediaController(this);
         addTextVideoView.setMediaController(mediaController);
@@ -247,6 +252,7 @@ public class AddTextActivity extends AppCompatActivity implements View.OnClickLi
         addTextVideoView.start();
 
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();

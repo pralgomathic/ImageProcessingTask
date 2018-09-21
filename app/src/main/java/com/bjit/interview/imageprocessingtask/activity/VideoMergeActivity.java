@@ -156,13 +156,13 @@ public class VideoMergeActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onSuccess(String message) {
                 progressDialog.setMessage("Processing\n" + message);
-                Log.d("FFMPEG NEW", message);
+                Constants.debugLog(TAG,message);
             }
 
             @Override
             public void onProgress(String message) {
                 progressDialog.setMessage("Processing..Please Wait..");
-                Log.d("FFMPEG NEW", message);
+                Constants.debugLog(TAG,message);
             }
 
             @Override
@@ -195,17 +195,17 @@ public class VideoMergeActivity extends AppCompatActivity implements View.OnClic
 
                 } else {
                     Toast.makeText(this, selectedVideoOnePath, Toast.LENGTH_LONG).show();
-                    Log.d(TAG, selectedVideoOnePath);
+                    Constants.debugLog(TAG, selectedVideoOnePath);
 
                 }
             } else if (requestCode == SELECT_VIDEO_TWO) {
                 selectedVideoTwoPath = getVideoPath(data.getData());
                 if (selectedVideoTwoPath == null) {
-                    Log.d(TAG, "selected video path = null!");
+                    Constants.errorLog(TAG, "selected video path = null!");
 
                 } else {
                     Toast.makeText(this, selectedVideoTwoPath, Toast.LENGTH_LONG).show();
-                    Log.d(TAG, selectedVideoTwoPath);
+                    Constants.debugLog(TAG, selectedVideoTwoPath);
 
                 }
             }
@@ -240,7 +240,7 @@ public class VideoMergeActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
-        Log.d(TAG, "Permission callback called-------");
+       Constants.debugLog(TAG, "Permission callback called-------");
         switch (requestCode) {
             case Constants.REQUEST_ID_MULTIPLE_PERMISSIONS: {
 
@@ -256,11 +256,11 @@ public class VideoMergeActivity extends AppCompatActivity implements View.OnClic
                     if (perms.get(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                             && perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                             ) {
-                        Log.d(TAG, "read & write permission granted");
+                        Constants.debugLog(TAG, "read & write permission granted");
                         Toast.makeText(this, "read & write permission granted", Toast.LENGTH_LONG).show();
 
                     } else {
-                        Log.d(TAG, "Some permissions are not granted ask again ");
+                        Constants.errorLog(TAG, "Some permissions are not granted ask again ");
                     }
                 }
             }

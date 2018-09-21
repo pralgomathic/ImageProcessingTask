@@ -19,7 +19,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class CropImageActivity extends AppCompatActivity implements CropImageView.OnSetImageUriCompleteListener, CropImageView.OnCropImageCompleteListener   {
+public class CropImageActivity extends AppCompatActivity implements CropImageView.OnSetImageUriCompleteListener, CropImageView.OnCropImageCompleteListener {
 
     private static final int DEFAULT_ASPECT_RATIO_VALUES = 100;
 
@@ -43,7 +43,7 @@ public class CropImageActivity extends AppCompatActivity implements CropImageVie
     private boolean isFixedAspectRatio = false;
 
     Bitmap croppedImage;
-    //endregion
+
 
     // Saves the state upon rotating the screen/restarting the activity
     @Override
@@ -66,18 +66,18 @@ public class CropImageActivity extends AppCompatActivity implements CropImageVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crop_image);
 
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Crop Image");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-        if(!getIntent().hasExtra(EXTRA_IMAGE_URI)) {
+        if (!getIntent().hasExtra(EXTRA_IMAGE_URI)) {
             cropFailed();
             return;
         }
 
-        isFixedAspectRatio = getIntent().getBooleanExtra(FIXED_ASPECT_RATIO , false);
+        isFixedAspectRatio = getIntent().getBooleanExtra(FIXED_ASPECT_RATIO, false);
         mAspectRatioX = getIntent().getIntExtra(EXTRA_ASPECT_RATIO_X, DEFAULT_ASPECT_RATIO_VALUES);
         mAspectRatioY = getIntent().getIntExtra(EXTRA_ASPECT_RATIO_Y, DEFAULT_ASPECT_RATIO_VALUES);
 
@@ -112,8 +112,7 @@ public class CropImageActivity extends AppCompatActivity implements CropImageVie
         if (id == R.id.action_crop) {
             mCropImageView.getCroppedImageAsync(0, 0);
             return true;
-        }
-        else  if (id == R.id.action_cancel) {
+        } else if (id == R.id.action_cancel) {
             cropFailed();
             return false;
         }
@@ -151,7 +150,7 @@ public class CropImageActivity extends AppCompatActivity implements CropImageVie
         // path to /data/data/yourapp/app_data/imageDir
         File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
         // Create imageDir
-        File mypath=new File(directory,"image.jpg");
+        File mypath = new File(directory, "image.jpg");
 
         FileOutputStream fos = null;
         try {
@@ -185,6 +184,7 @@ public class CropImageActivity extends AppCompatActivity implements CropImageVie
             cropFailed();
         }
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
