@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.bjit.interview.imageprocessingtask" >
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme" >
+        <meta-data android:name="com.google.android.gms.vision.DEPENDENCIES" android:value="face"/>
+        <activity
+            android:name="com.bjit.interview.imageprocessingtask.activity.MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.ImageCroppingActivity" />
+        <activity android:name=".activity.VideoMergeActivity" />
+        <activity android:name=".activity.AddAudioActivity" />
+        <activity android:name=".activity.AddTextActivity"></activity>
+        <activity android:name=".activity.CropImageActivity"
+            android:label="Crop Image"></activity>
+        <activity android:name=".activity.ImagePickerActivity"
+            android:label="Pick Image"></activity>
+
+    </application>
+
+</manifest>
