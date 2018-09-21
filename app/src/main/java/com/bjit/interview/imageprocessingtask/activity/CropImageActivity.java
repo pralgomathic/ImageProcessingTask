@@ -67,6 +67,7 @@ public class CropImageActivity extends AppCompatActivity implements CropImageVie
         setContentView(R.layout.activity_crop_image);
 
         if (getSupportActionBar() != null){
+            getSupportActionBar().setTitle("Crop Image");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }

@@ -15,5 +15,6 @@
     <string name="merge_video_show">If videos merged successfully, it will automatically play below. </string>
     <string name="add_audio_show">If audio added successfully, video will automatically play below. </string>
     <string name="add_text_show">If text added successfully, video will automatically play below. </string>
+    <string name="crop_image_show">If image cropped successfully, it will automatically show below. </string>
 
 </resources>

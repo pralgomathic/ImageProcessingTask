@@ -1,9 +1,11 @@
 package com.bjit.interview.imageprocessingtask.activity;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -18,11 +20,14 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.bjit.interview.imageprocessingtask.R;
+import com.bjit.interview.imageprocessingtask.Utilities.Constants;
 import com.bjit.interview.imageprocessingtask.Utilities.PathUtils;
 import com.bjit.interview.imageprocessingtask.Utilities.Utils;
 
 import java.io.File;
 import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 
 import nl.bravobit.ffmpeg.ExecuteBinaryResponseHandler;
 import nl.bravobit.ffmpeg.FFmpeg;
@@ -50,6 +55,7 @@ public class AddTextActivity extends AppCompatActivity implements View.OnClickLi
 
     private void initUI() {
         if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Add Text to Video");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
@@ -138,18 +144,28 @@ public class AddTextActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void selectFontFile() {
+        if (Utils.checkAndRequestPermissions(getApplicationContext(), this)) {
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("*/*");
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            startActivityForResult(
+                    Intent.createChooser(intent, "Select Font File (TTF)"),
+                    FILE_SELECT_CODE);
+        } else {
+            Utils.checkAndRequestPermissions(getApplicationContext(), this);
+        }
 
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("*/*");
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        startActivityForResult(
-                Intent.createChooser(intent, "Select Font File (TTF)"),
-                FILE_SELECT_CODE);
+
     }
 
     private void selectVideo() {
-        Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(i, SELECT_VIDEO);
+        if (Utils.checkAndRequestPermissions(getApplicationContext(), this)) {
+            Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(i, SELECT_VIDEO);
+        } else {
+            Utils.checkAndRequestPermissions(getApplicationContext(), this);
+        }
+
     }
 
     @Override
@@ -185,7 +201,36 @@ public class AddTextActivity extends AppCompatActivity implements View.OnClickLi
         }
 
     }
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        Log.d(TAG, "Permission callback called-------");
+        switch (requestCode) {
+            case Constants.REQUEST_ID_MULTIPLE_PERMISSIONS: {
 
+                Map<String, Integer> perms = new HashMap<>();
+                // Initialize the map with both permissions
+                perms.put(Manifest.permission.READ_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+                perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+                // Fill with actual results from user
+                if (grantResults.length > 0) {
+                    for (int i = 0; i < permissions.length; i++)
+                        perms.put(permissions[i], grantResults[i]);
+                    // Check for both permissions
+                    if (perms.get(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                            && perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                            ) {
+                        Log.d(TAG, "read & write permission granted");
+                        Toast.makeText(this, "read & write permission granted", Toast.LENGTH_LONG).show();
+
+                    } else {
+                        Log.d(TAG, "Some permissions are not granted ask again ");
+                    }
+                }
+            }
+        }
+
+    }
     private String getVideoPath(Uri uri) {
         String[] projection = {MediaStore.Images.Media.DATA};
         Cursor cursor = managedQuery(uri, projection, null, null, null);

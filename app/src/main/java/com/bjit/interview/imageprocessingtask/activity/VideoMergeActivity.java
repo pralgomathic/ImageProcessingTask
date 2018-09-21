@@ -24,6 +24,7 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.bjit.interview.imageprocessingtask.R;
+import com.bjit.interview.imageprocessingtask.Utilities.Constants;
 import com.bjit.interview.imageprocessingtask.Utilities.Utils;
 
 import java.io.File;
@@ -44,7 +45,6 @@ public class VideoMergeActivity extends AppCompatActivity implements View.OnClic
 
     private static final String TAG = "VideoMergeActivity";
     private static final int REQUEST_TAKE_GALLERY_VIDEO = 1020;
-    private static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 2020;
     private static final int SELECT_VIDEO_ONE = 100;
     private static final int SELECT_VIDEO_TWO = 200;
     private Button selectVideoOneButton, selectVideoTwoButton, mergeVideoButton;
@@ -53,6 +53,7 @@ public class VideoMergeActivity extends AppCompatActivity implements View.OnClic
     private String selectedVideoOnePath = "";
     private String selectedVideoTwoPath = "";
     private String videoOutputDestination = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +63,7 @@ public class VideoMergeActivity extends AppCompatActivity implements View.OnClic
 
     private void initUI() {
         if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Merge Video");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
@@ -71,27 +73,27 @@ public class VideoMergeActivity extends AppCompatActivity implements View.OnClic
         selectVideoTwoButton.setOnClickListener(this);
         mergeVideoButton = (Button) findViewById(R.id.mergeVideoButton);
         mergeVideoButton.setOnClickListener(this);
-        mergeVideoView = (VideoView)findViewById(R.id.mergeVideoView);
+        mergeVideoView = (VideoView) findViewById(R.id.mergeVideoView);
         mergeVideoView.setVisibility(View.INVISIBLE);
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle(null);
     }
 
     private void selectVideoOne() {
-        if (checkAndRequestPermissions()) {
+        if (Utils.checkAndRequestPermissions(getApplicationContext(), this)) {
             Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(i, SELECT_VIDEO_ONE);
         } else {
-            checkAndRequestPermissions();
+            Utils.checkAndRequestPermissions(getApplicationContext(), this);
         }
     }
 
     private void selectVideoTwo() {
-        if (checkAndRequestPermissions()) {
+        if (Utils.checkAndRequestPermissions(getApplicationContext(), this)) {
             Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(i, SELECT_VIDEO_TWO);
         } else {
-            checkAndRequestPermissions();
+            Utils.checkAndRequestPermissions(getApplicationContext(), this);
         }
 
     }
@@ -166,7 +168,7 @@ public class VideoMergeActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onFinish() {
                 progressDialog.dismiss();
-                if(!videoOutputDestination.isEmpty()) {
+                if (!videoOutputDestination.isEmpty()) {
                     mergeVideoView.setVisibility(View.VISIBLE);
                     playVideo(videoOutputDestination);
                 }
@@ -228,29 +230,10 @@ public class VideoMergeActivity extends AppCompatActivity implements View.OnClic
         mergeVideoView.start();
 
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
-        return true;
-    }
-
-    private boolean checkAndRequestPermissions() {
-        int readpermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
-        int writepermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-        List<String> listPermissionsNeeded = new ArrayList<>();
-
-        if (readpermission != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-        }
-        if (writepermission != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        }
-
-        if (!listPermissionsNeeded.isEmpty()) {
-            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), REQUEST_ID_MULTIPLE_PERMISSIONS);
-            return false;
-        }
         return true;
     }
 
@@ -259,7 +242,7 @@ public class VideoMergeActivity extends AppCompatActivity implements View.OnClic
                                            String permissions[], int[] grantResults) {
         Log.d(TAG, "Permission callback called-------");
         switch (requestCode) {
-            case REQUEST_ID_MULTIPLE_PERMISSIONS: {
+            case Constants.REQUEST_ID_MULTIPLE_PERMISSIONS: {
 
                 Map<String, Integer> perms = new HashMap<>();
                 // Initialize the map with both permissions

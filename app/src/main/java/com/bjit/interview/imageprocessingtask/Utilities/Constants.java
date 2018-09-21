@@ -7,6 +7,7 @@ import android.util.Log;
  */
 
 public class Constants {
+    public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 2020;
     private static boolean isDebugLogOn = true;
 
     public static void debugLog(String tag, String message) {

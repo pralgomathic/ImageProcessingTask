@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.bjit.interview.imageprocessingtask.activity.CropImageActivity">
-
-
-    <ImageView
-        android:id="@+id/image"
-        android:layout_above="@+id/btn_choose_picture"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
     <Button
         android:id="@+id/btn_choose_picture"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Choose Image"
-        android:layout_alignParentBottom="true"
-        android:gravity="center_horizontal"
-        android:layout_centerHorizontal="true"/>
-</RelativeLayout>
+        android:text="Choose Image" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/crop_image_show"
+        android:layout_margin="10dp"
+        android:gravity="center"/>
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>
