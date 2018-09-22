@@ -84,4 +84,25 @@
             android:text="Adding Text to Video"
             android:textColor="@android:color/white"/>
     </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/addAnimationVideoRL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/addTextToVideoRL"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp">
+
+        <ImageButton
+            android:id="@+id/addAnimationToVideoImageButton"
+            android:layout_width="180dp"
+            android:layout_height="150dp"
+            android:background="@color/colorPrimary"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Adding Animation to Video"
+            android:textColor="@android:color/white"/>
+    </RelativeLayout>
 </RelativeLayout>

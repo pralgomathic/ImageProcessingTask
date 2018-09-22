@@ -17,7 +17,7 @@ import nl.bravobit.ffmpeg.FFmpeg;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private static final String TAG = "MainActivity";
-    private ImageButton imageCropButton, videoMergeButton, addAudioButton, addTextButton;
+    private ImageButton imageCropButton, videoMergeButton, addAudioButton, addTextButton, addAnimationToVideoButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         addAudioButton.setOnClickListener(this);
         addTextButton = (ImageButton)findViewById(R.id.addTextToVideButton);
         addTextButton.setOnClickListener(this);
+        addAnimationToVideoButton = (ImageButton)findViewById(R.id.addAnimationToVideoImageButton);
+        addAnimationToVideoButton.setOnClickListener(this);
 
     }
 
@@ -58,6 +60,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.addTextToVideButton:
                 Intent addTextIntent = new Intent(this, AddTextActivity.class);
                 startActivity(addTextIntent);
+                break;
+            case R.id.addAnimationToVideoImageButton:
+                Intent addAnimationIntent = new Intent(this, AddAnimationActivity.class);
+                startActivity(addAnimationIntent);
                 break;
         }
 
