@@ -28,16 +28,18 @@ import java.util.Map;
 import nl.bravobit.ffmpeg.ExecuteBinaryResponseHandler;
 import nl.bravobit.ffmpeg.FFmpeg;
 
-public class AddAnimationActivity extends AppCompatActivity implements View.OnClickListener{
+public class AddAnimationActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "AddAnimationActivity";
-    private static final int SELECT_VIDEO = 200;
+    private static final int SELECT_VIDEO = 1200;
     private String selectedVideoPath = "";
     private Uri selectedVideoUri;
     private Button selectVideoButton, addAnimationToVideoButton;
     private ProgressDialog progressDialog;
     private VideoView addAnimationVideoView;
     private String videoOutputDestination = "";
+    private int videoDuration;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,17 +47,17 @@ public class AddAnimationActivity extends AppCompatActivity implements View.OnCl
         initUI();
     }
 
-    private void initUI(){
+    private void initUI() {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Add Animation to Video");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
-        selectVideoButton = (Button)findViewById(R.id.selectVideoButton);
+        selectVideoButton = (Button) findViewById(R.id.selectVideoButton);
         selectVideoButton.setOnClickListener(this);
-        addAnimationToVideoButton = (Button)findViewById(R.id.addAnimationToVideoButton);
+        addAnimationToVideoButton = (Button) findViewById(R.id.addAnimationToVideoButton);
         addAnimationToVideoButton.setOnClickListener(this);
-        addAnimationVideoView = (VideoView)findViewById(R.id.addAnimationVideoView);
+        addAnimationVideoView = (VideoView) findViewById(R.id.addAnimationVideoView);
         addAnimationVideoView.setVisibility(View.INVISIBLE);
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle(null);
@@ -64,7 +66,7 @@ public class AddAnimationActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.selectVideoButton:
                 selectVideo();
                 break;
@@ -74,6 +76,7 @@ public class AddAnimationActivity extends AppCompatActivity implements View.OnCl
 
         }
     }
+
     private void selectVideo() {
         if (Utils.checkAndRequestPermissions(getApplicationContext(), this)) {
             Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
@@ -85,7 +88,7 @@ public class AddAnimationActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void addAnimationToVideo() {
-        if (!selectedVideoPath.isEmpty() && getMediaDuration() > 5) {
+        if (!selectedVideoPath.isEmpty() && videoDuration > 5) {
 
             runAddAnimationCommand();
         } else {
@@ -94,16 +97,16 @@ public class AddAnimationActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void runAddAnimationCommand() {
-        String[] command = {"-y", "-i", selectedVideoPath, "-acodec", "copy", "-vf", "fade=t=in:st=0:d=3,fade=t=out:st=" + String.valueOf(getMediaDuration() - 3) + ":d=3", videoOutputDestination};
-        videoOutputDestination = Utils.getExternalStoragePath() + "/" + Utils.getOutputFileName("add_animation", Utils.getFileExtension(selectedVideoPath));
-        //String[] command = new String[]{"-y", "-i", selectedVideoPath, "-i", selectedAudioPath, "-c", "copy", "-map", "0:0", "-map", "1:0", videoOutputDestination};
 
+        videoOutputDestination = Utils.getExternalStoragePath() + "/" + Utils.getOutputFileName("add_animation", Utils.getFileExtension(selectedVideoPath));
+        String[] command = {"-y", "-i", selectedVideoPath, "-acodec", "copy", "-vf", "fade=t=in:st=0:d=2,fade=t=out:st=" + String.valueOf(videoDuration - 2) + ":d=2", videoOutputDestination};
         if (command.length != 0) {
             runFFmpegCommand(command);
         } else {
             Toast.makeText(this, getString(R.string.empty_command_toast), Toast.LENGTH_LONG).show();
         }
     }
+
     private void runFFmpegCommand(String[] command) {
         FFmpeg.getInstance(this).execute(command, new ExecuteBinaryResponseHandler() {
 
@@ -128,11 +131,11 @@ public class AddAnimationActivity extends AppCompatActivity implements View.OnCl
             @Override
             public void onFinish() {
                 progressDialog.dismiss();
-//                if (!videoOutputDestination.isEmpty()) {
-//
-//                    addAnimationVideoView.setVisibility(View.VISIBLE);
-//                    playVideo(videoOutputDestination);
-//                }
+                if (!videoOutputDestination.isEmpty()) {
+
+                    addAnimationVideoView.setVisibility(View.VISIBLE);
+                    playVideo(videoOutputDestination);
+                }
             }
         });
 
@@ -145,12 +148,13 @@ public class AddAnimationActivity extends AppCompatActivity implements View.OnCl
         addAnimationVideoView.start();
 
     }
-    private long getMediaDuration(){
+
+    private int getMediaDuration() {
         MediaMetadataRetriever retriever = new MediaMetadataRetriever();
         retriever.setDataSource(getApplicationContext(), selectedVideoUri);
         String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
-        long timeInSec = Long.parseLong(time)/1000;
-        Constants.debugLog(TAG, "video duration : "+timeInSec);
+        int timeInSec = (int) (Long.parseLong(time) / 1000);
+        Constants.debugLog(TAG, "video duration : " + timeInSec);
         retriever.release();
         return timeInSec;
     }
@@ -160,6 +164,7 @@ public class AddAnimationActivity extends AppCompatActivity implements View.OnCl
         onBackPressed();
         return true;
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
@@ -172,12 +177,14 @@ public class AddAnimationActivity extends AppCompatActivity implements View.OnCl
                 } else {
                     Toast.makeText(this, selectedVideoPath, Toast.LENGTH_LONG).show();
                     Constants.debugLog(TAG, selectedVideoPath);
+                    videoDuration = getMediaDuration();
 
                 }
             }
         }
 
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
@@ -208,6 +215,7 @@ public class AddAnimationActivity extends AppCompatActivity implements View.OnCl
         }
 
     }
+
     private String getVideoPath(Uri uri) {
         String[] projection = {MediaStore.Images.Media.DATA};
         Cursor cursor = managedQuery(uri, projection, null, null, null);
