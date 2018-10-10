@@ -1,4 +1,4 @@
-package com.bjit.interview.imageprocessingtask;
+package com.jumman.pralgomathic.imageprocessingtask;
 
 import org.junit.Test;
 

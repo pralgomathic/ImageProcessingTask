@@ -1,4 +1,4 @@
-package com.bjit.interview.imageprocessingtask.activity;
+package com.jumman.pralgomathic.imageprocessingtask.activity;
 
 import android.Manifest;
 import android.app.ProgressDialog;
@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,9 +16,9 @@ import android.widget.MediaController;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.bjit.interview.imageprocessingtask.R;
-import com.bjit.interview.imageprocessingtask.Utilities.Constants;
-import com.bjit.interview.imageprocessingtask.Utilities.Utils;
+import com.jumman.pralgomathic.imageprocessingtask.R;
+import com.jumman.pralgomathic.imageprocessingtask.Utilities.Constants;
+import com.jumman.pralgomathic.imageprocessingtask.Utilities.Utils;
 
 import java.util.HashMap;
 import java.util.Map;

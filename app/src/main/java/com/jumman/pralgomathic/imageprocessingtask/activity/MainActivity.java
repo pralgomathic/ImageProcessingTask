@@ -1,14 +1,13 @@
-package com.bjit.interview.imageprocessingtask.activity;
+package com.jumman.pralgomathic.imageprocessingtask.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
-import com.bjit.interview.imageprocessingtask.R;
-import com.bjit.interview.imageprocessingtask.Utilities.Constants;
+import com.jumman.pralgomathic.imageprocessingtask.R;
+import com.jumman.pralgomathic.imageprocessingtask.Utilities.Constants;
 
 import nl.bravobit.ffmpeg.ExecuteBinaryResponseHandler;
 import nl.bravobit.ffmpeg.FFmpeg;

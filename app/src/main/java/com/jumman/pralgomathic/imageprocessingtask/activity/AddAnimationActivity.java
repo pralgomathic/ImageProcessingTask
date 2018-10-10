@@ -1,4 +1,4 @@
-package com.bjit.interview.imageprocessingtask.activity;
+package com.jumman.pralgomathic.imageprocessingtask.activity;
 
 import android.Manifest;
 import android.app.ProgressDialog;
@@ -13,14 +13,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.MediaController;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.bjit.interview.imageprocessingtask.R;
-import com.bjit.interview.imageprocessingtask.Utilities.Constants;
-import com.bjit.interview.imageprocessingtask.Utilities.Utils;
+import com.jumman.pralgomathic.imageprocessingtask.R;
+import com.jumman.pralgomathic.imageprocessingtask.Utilities.Constants;
+import com.jumman.pralgomathic.imageprocessingtask.Utilities.Utils;
 
 import java.util.HashMap;
 import java.util.Map;

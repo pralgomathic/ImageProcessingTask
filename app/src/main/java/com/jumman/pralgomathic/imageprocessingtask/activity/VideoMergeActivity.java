@@ -1,19 +1,12 @@
-package com.bjit.interview.imageprocessingtask.activity;
+package com.jumman.pralgomathic.imageprocessingtask.activity;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,19 +16,12 @@ import android.widget.MediaController;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.bjit.interview.imageprocessingtask.R;
-import com.bjit.interview.imageprocessingtask.Utilities.Constants;
-import com.bjit.interview.imageprocessingtask.Utilities.Utils;
+import com.jumman.pralgomathic.imageprocessingtask.R;
+import com.jumman.pralgomathic.imageprocessingtask.Utilities.Constants;
+import com.jumman.pralgomathic.imageprocessingtask.Utilities.Utils;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import nl.bravobit.ffmpeg.ExecuteBinaryResponseHandler;

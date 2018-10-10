@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.bjit.interview.imageprocessingtask.activity.AddTextActivity">
+    tools:context="com.jumman.pralgomathic.imageprocessingtask.activity.AddTextActivity">
 
     <EditText
         android:id="@+id/textInputEditText"

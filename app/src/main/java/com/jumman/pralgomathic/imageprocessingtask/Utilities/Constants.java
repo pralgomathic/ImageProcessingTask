@@ -1,4 +1,4 @@
-package com.bjit.interview.imageprocessingtask.Utilities;
+package com.jumman.pralgomathic.imageprocessingtask.Utilities;
 
 import android.util.Log;
 

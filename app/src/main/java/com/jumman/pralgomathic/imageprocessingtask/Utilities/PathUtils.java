@@ -1,4 +1,4 @@
-package com.bjit.interview.imageprocessingtask.Utilities;
+package com.jumman.pralgomathic.imageprocessingtask.Utilities;
 
 import android.annotation.SuppressLint;
 import android.content.ContentUris;

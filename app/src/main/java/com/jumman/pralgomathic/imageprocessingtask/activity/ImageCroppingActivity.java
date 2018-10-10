@@ -1,11 +1,10 @@
-package com.bjit.interview.imageprocessingtask.activity;
+package com.jumman.pralgomathic.imageprocessingtask.activity;
 
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -15,8 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.bjit.interview.imageprocessingtask.R;
-import com.theartofdev.edmodo.cropper.CropImageView;
+import com.jumman.pralgomathic.imageprocessingtask.R;
 
 import java.io.File;
 import java.io.FileInputStream;

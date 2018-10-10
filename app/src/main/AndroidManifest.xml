@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.bjit.interview.imageprocessingtask">
+    package="com.jumman.pralgomathic.imageprocessingtask">
 
     <uses-feature android:name="android.hardware.camera" />
 
@@ -19,7 +19,7 @@
             android:value="face" />
 
         <activity
-            android:name=".activity.MainActivity"
+            android:name="com.jumman.pralgomathic.imageprocessingtask.activity.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,17 +27,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.ImageCroppingActivity" />
-        <activity android:name=".activity.VideoMergeActivity" />
-        <activity android:name=".activity.AddAudioActivity" />
-        <activity android:name=".activity.AddTextActivity" />
+        <activity android:name="com.jumman.pralgomathic.imageprocessingtask.activity.ImageCroppingActivity" />
+        <activity android:name="com.jumman.pralgomathic.imageprocessingtask.activity.VideoMergeActivity" />
+        <activity android:name="com.jumman.pralgomathic.imageprocessingtask.activity.AddAudioActivity" />
+        <activity android:name="com.jumman.pralgomathic.imageprocessingtask.activity.AddTextActivity" />
         <activity
-            android:name=".activity.CropImageActivity"
+            android:name="com.jumman.pralgomathic.imageprocessingtask.activity.CropImageActivity"
             android:label="Crop Image" />
         <activity
-            android:name=".activity.ImagePickerActivity"
+            android:name="com.jumman.pralgomathic.imageprocessingtask.activity.ImagePickerActivity"
             android:label="Pick Image" />
-        <activity android:name=".activity.AddAnimationActivity"></activity>
+        <activity android:name="com.jumman.pralgomathic.imageprocessingtask.activity.AddAnimationActivity"></activity>
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package com.bjit.interview.imageprocessingtask.activity;
+package com.jumman.pralgomathic.imageprocessingtask.activity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,7 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.bjit.interview.imageprocessingtask.R;
+import com.jumman.pralgomathic.imageprocessingtask.R;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;

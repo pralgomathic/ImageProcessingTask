@@ -1,4 +1,4 @@
-package com.bjit.interview.imageprocessingtask;
+package com.jumman.pralgomathic.imageprocessingtask;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

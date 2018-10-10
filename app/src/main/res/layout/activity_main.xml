@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:gravity="center"
-    tools:context="com.bjit.interview.imageprocessingtask.activity.MainActivity">
+    tools:context="com.jumman.pralgomathic.imageprocessingtask.activity.MainActivity">
 
     <RelativeLayout
         android:id="@+id/imageCroppingRL"
